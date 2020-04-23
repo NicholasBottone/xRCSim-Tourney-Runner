@@ -1,5 +1,5 @@
 # FRCSim Tourney Runner
- Keeps track of rankings and schedules for FRCSim competitions.  Also includes an OBS Lua script for displaying live game data on livestream overlays.
+ Keeps track of rankings and schedules for FRCSim competitions.  Also includes an [OBS Lua script](https://github.com/NicholasBottone/FRCSim-Tourney-Runner/blob/master/SimSync.lua) for displaying live game data on livestream overlays.
 
 To be used for competitions and tournaments in the Unity-based game [FTC & FRC Simulator](http://ftcsimulator.org/).  Used in online [SRC events](https://discord.gg/2sZhVU4).
 
@@ -8,13 +8,13 @@ To be used for competitions and tournaments in the Unity-based game [FTC & FRC S
 #### Setting up for the competition
 
 1. Generate a qualification match schedule.  I recommend using [Cheesy Arena by Team 254](https://github.com/Team254/cheesy-arena).  Save the raw schedule file as "schedule.csv" in the same directory as the JAR.
-    - See this file as an example.
+    - See [this file](https://github.com/NicholasBottone/FRCSim-Tourney-Runner/blob/master/example%20CSVs/schedule.csv) as an example.
 
 2. Assemble a list of the players/teams participating, and put the player names and IDs into the "teams.csv" file in the same directory as the JAR.
-    - See this file as an example.
+    - See [this file](https://github.com/NicholasBottone/FRCSim-Tourney-Runner/blob/master/example%20CSVs/teams.csv) as an example.
 
 3. Insert an otherwise empty "matches.csv" file containing only the headings (first row) into the same directory as the JAR.
-    - See this file as an example.
+    - See [this file](https://github.com/NicholasBottone/FRCSim-Tourney-Runner/blob/master/example%20CSVs/matches.csv) as an example.
 
 4. Create an empty folder named "TourneyData" in the same directory as the JAR.  This will be populated with data 
 
