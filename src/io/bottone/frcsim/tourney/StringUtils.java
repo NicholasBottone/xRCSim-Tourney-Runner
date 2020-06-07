@@ -17,7 +17,7 @@ package io.bottone.frcsim.tourney;
  * this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * @author Nicholas Bottone
- * @version 0.1.0
+ * @version SRC.2.0
  */
 public class StringUtils {
 

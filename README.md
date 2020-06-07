@@ -1,7 +1,7 @@
 # FRCSim Tourney Runner
  Keeps track of rankings and schedules for FRCSim competitions.  Also includes an [OBS Lua script](https://github.com/NicholasBottone/FRCSim-Tourney-Runner/blob/master/SimSync.lua) for displaying live game data on livestream overlays.
 
-To be used for competitions and tournaments in the Unity-based game [FTC & FRC Simulator](http://ftcsimulator.org/).  Used in online [SRC events](https://discord.gg/2sZhVU4).
+To be used for competitions and tournaments in the Unity-based game [xRC Simulator](http://xrcsimulator.org/).  Used in online [SRC events](https://discord.gg/2sZhVU4).
 
 ## How to run an event
 

@@ -17,7 +17,7 @@ package io.bottone.frcsim.tourney;
  * this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * @author Nicholas Bottone
- * @version 0.1.0
+ * @version SRC.2.0
  */
 public class Match {
 
@@ -55,7 +55,7 @@ public class Match {
 	public Match(String line, Team[] redTeams, Team[] blueTeams) {
 		String[] split = line.split(",");
 
-		this.matchNumber = Integer.parseInt(split[0]);
+		this.matchNumber = (int) Double.parseDouble(split[0]);
 
 		this.redTeams = redTeams;
 		this.blueTeams = blueTeams;
@@ -67,23 +67,23 @@ public class Match {
 
 		played = true;
 
-		this.redMatchPoints = Integer.parseInt(split[8]);
-		this.blueMatchPoints = Integer.parseInt(split[9]);
+		this.redMatchPoints = (int) Double.parseDouble(split[8]);
+		this.blueMatchPoints = (int) Double.parseDouble(split[9]);
 
-		this.redAutoPoints = Integer.parseInt(split[14]);
-		this.redTeleopPoints = Integer.parseInt(split[15]);
-		this.redEndgamePoints = Integer.parseInt(split[16]);
-		this.redPowerCells = Integer.parseInt(split[17]);
+		this.redAutoPoints = (int) Double.parseDouble(split[14]);
+		this.redTeleopPoints = (int) Double.parseDouble(split[15]);
+		this.redEndgamePoints = (int) Double.parseDouble(split[16]);
+		this.redPowerCells = (int) Double.parseDouble(split[17]);
 
-		this.blueAutoPoints = Integer.parseInt(split[19]);
-		this.blueTeleopPoints = Integer.parseInt(split[20]);
-		this.blueEndgamePoints = Integer.parseInt(split[21]);
-		this.bluePowerCells = Integer.parseInt(split[22]);
+		this.blueAutoPoints = (int) Double.parseDouble(split[19]);
+		this.blueTeleopPoints = (int) Double.parseDouble(split[20]);
+		this.blueEndgamePoints = (int) Double.parseDouble(split[21]);
+		this.bluePowerCells = (int) Double.parseDouble(split[22]);
 
-		this.redContribution = new int[] { Integer.parseInt(split[24]), Integer.parseInt(split[25]),
-				Integer.parseInt(split[26]) };
-		this.blueContribution = new int[] { Integer.parseInt(split[27]), Integer.parseInt(split[28]),
-				Integer.parseInt(split[29]) };
+		this.redContribution = new int[] { (int) Double.parseDouble(split[24]), (int) Double.parseDouble(split[25]),
+				(int) Double.parseDouble(split[26]) };
+		this.blueContribution = new int[] { (int) Double.parseDouble(split[27]), (int) Double.parseDouble(split[28]),
+				(int) Double.parseDouble(split[29]) };
 	}
 
 	public Match(int matchNumber, int redAutoPoints, int redEndgamePoints, int redTeleopPoints, int redPowerCells,

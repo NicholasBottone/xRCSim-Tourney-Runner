@@ -1,5 +1,8 @@
 package io.bottone.frcsim.tourney;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * FRCSim Tourney Runner Copyright (C) 2020 Nicholas Bottone
  *
@@ -17,7 +20,7 @@ package io.bottone.frcsim.tourney;
  * this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * @author Nicholas Bottone
- * @version 0.1.0
+ * @version SRC.2.0
  */
 public class Team implements Comparable<Team> {
 
@@ -50,13 +53,17 @@ public class Team implements Comparable<Team> {
 	// AVERAGE STAT
 	private double avgPowerCells;
 
+	// RED CARDS / SURROGATES
+	private List<Integer> surrogateMatches = new ArrayList<>();
+	private List<Integer> redCardMatches = new ArrayList<>();
+
 	public Team(String s) {
 		String[] ss = s.split(",");
 
 		id = ss[0];
 		name = ss[1];
 
-		rank = Integer.parseInt(ss[2]);
+		rank = (int) Double.parseDouble(ss[2]);
 
 		rankingScore = Double.parseDouble(ss[3]);
 		autoScore = Double.parseDouble(ss[4]);
@@ -66,28 +73,36 @@ public class Team implements Comparable<Team> {
 
 		contributionScore = Double.parseDouble(ss[9]);
 
-		matchesPlayed = Integer.parseInt(ss[11]);
+		matchesPlayed = (int) Double.parseDouble(ss[11]);
 
-		rankingPoints = Integer.parseInt(ss[13]);
-		autoPoints = Integer.parseInt(ss[14]);
-		endgamePoints = Integer.parseInt(ss[15]);
-		teleopPoints = Integer.parseInt(ss[16]);
-		matchPoints = Integer.parseInt(ss[17]);
-		contributionPoints = Integer.parseInt(ss[18]);
+		rankingPoints = (int) Double.parseDouble(ss[13]);
+		autoPoints = (int) Double.parseDouble(ss[14]);
+		endgamePoints = (int) Double.parseDouble(ss[15]);
+		teleopPoints = (int) Double.parseDouble(ss[16]);
+		matchPoints = (int) Double.parseDouble(ss[17]);
+		contributionPoints = (int) Double.parseDouble(ss[18]);
 
 		avgPowerCells = Double.parseDouble(ss[20]);
 
 	}
 
-	public void addMatchData(int rp, int auto, int endgame, int teleop, int match, int powerCells, int contribution) {
-		rankingPoints += rp;
-		autoPoints += auto;
-		endgamePoints += endgame;
-		teleopPoints += teleop;
-		contributionPoints += contribution;
-		matchPoints += match;
+	public void addMatchData(int rp, int auto, int endgame, int teleop, int match, int powerCells, int contribution,
+			int matchNum) {
+		if (surrogateMatches.contains(matchNum)) {
+			return;
+		}
+		if (redCardMatches.contains(matchNum)) {
+			avgPowerCells = ((avgPowerCells * matchesPlayed)) / ++matchesPlayed;
+		} else {
+			rankingPoints += rp;
+			autoPoints += auto;
+			endgamePoints += endgame;
+			teleopPoints += teleop;
+			contributionPoints += contribution;
+			matchPoints += match;
 
-		avgPowerCells = ((avgPowerCells * matchesPlayed) + powerCells) / ++matchesPlayed;
+			avgPowerCells = ((avgPowerCells * matchesPlayed) + powerCells) / ++matchesPlayed;
+		}
 
 		rankingScore = ((int) (((double) rankingPoints / matchesPlayed) * 100)) / 100D;
 		autoScore = ((int) (((double) autoPoints / matchesPlayed) * 100)) / 100D;
@@ -163,7 +178,7 @@ public class Team implements Comparable<Team> {
 			return -value;
 
 		// Player ID
-		return Integer.parseInt(this.id) - Integer.parseInt(team.id);
+		return (int) Double.parseDouble(this.id) - (int) Double.parseDouble(team.id);
 
 	}
 
@@ -229,6 +244,14 @@ public class Team implements Comparable<Team> {
 
 	public void setRank(int newRank) {
 		rank = newRank;
+	}
+
+	public void addSurrogateMatch(int matchNum) {
+		surrogateMatches.add(matchNum);
+	}
+
+	public void addRedCardMatch(int matchNum) {
+		redCardMatches.add(matchNum);
 	}
 
 }
