@@ -17,7 +17,7 @@ package io.bottone.frcsim.tourney;
  * this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * @author Nicholas Bottone
- * @version SRC.2.0
+ * @version SRC.3.0
  */
 public class Match {
 
@@ -30,12 +30,14 @@ public class Match {
 	private int redTeleopPoints;
 	private int redPowerCells;
 	private int redMatchPoints;
+	private int redControlPanelPoints;
 
 	private int blueAutoPoints;
 	private int blueEndgamePoints;
 	private int blueTeleopPoints;
 	private int bluePowerCells;
 	private int blueMatchPoints;
+	private int blueControlPanelPoints;
 
 	private Team[] redTeams;
 	private Team[] blueTeams;
@@ -84,11 +86,15 @@ public class Match {
 				(int) Double.parseDouble(split[26]) };
 		this.blueContribution = new int[] { (int) Double.parseDouble(split[27]), (int) Double.parseDouble(split[28]),
 				(int) Double.parseDouble(split[29]) };
+
+		this.redControlPanelPoints = (int) Double.parseDouble(split[31]);
+		this.blueControlPanelPoints = (int) Double.parseDouble(split[32]);
 	}
 
 	public Match(int matchNumber, int redAutoPoints, int redEndgamePoints, int redTeleopPoints, int redPowerCells,
 			int redMatchPoints, int blueAutoPoints, int blueEndgamePoints, int blueTeleopPoints, int bluePowerCells,
-			int blueMatchPoints, Team[] redTeams, Team[] blueTeams, int[] redContribution, int[] blueContribution) {
+			int blueMatchPoints, Team[] redTeams, Team[] blueTeams, int[] redContribution, int[] blueContribution,
+			int redControlPanelPoints, int blueControlPanelPoints) {
 		played = true;
 
 		this.matchNumber = matchNumber;
@@ -106,6 +112,14 @@ public class Match {
 		this.blueTeams = blueTeams;
 		this.redContribution = redContribution;
 		this.blueContribution = blueContribution;
+		this.redControlPanelPoints = redControlPanelPoints;
+		this.blueControlPanelPoints = blueControlPanelPoints;
+
+		// fix for incorrect CP value on xRC
+		if (this.redControlPanelPoints == 10 || this.redControlPanelPoints == 30)
+			this.redControlPanelPoints += 5;
+		if (this.blueControlPanelPoints == 10 || this.blueControlPanelPoints == 30)
+			this.blueControlPanelPoints += 5;
 	}
 
 	@Override
@@ -121,19 +135,18 @@ public class Match {
 				+ redAutoPoints + "," + redTeleopPoints + "," + redEndgamePoints + "," + redPowerCells + ",,"
 				+ blueAutoPoints + "," + blueTeleopPoints + "," + blueEndgamePoints + "," + bluePowerCells + ",,"
 				+ redContribution[0] + "," + redContribution[1] + "," + redContribution[2] + "," + blueContribution[0]
-				+ "," + blueContribution[1] + "," + blueContribution[2];
+				+ "," + blueContribution[1] + "," + blueContribution[2] + ",," + redControlPanelPoints + ","
+				+ blueControlPanelPoints;
 	}
 
 	public int getRedRPs() {
 		return (redMatchPoints > blueMatchPoints ? 2 : redMatchPoints == blueMatchPoints ? 1 : 0)
-				+ (redPowerCells >= SimTourney.POWER_CELLS_RP ? 1 : 0)
-				+ (redEndgamePoints >= SimTourney.ENDGAME_RP ? 1 : 0);
+				+ (redControlPanelPoints >= 35 ? 1 : 0) + (redEndgamePoints >= SimTourney.ENDGAME_RP ? 1 : 0);
 	}
 
 	public int getBlueRPs() {
 		return (blueMatchPoints > redMatchPoints ? 2 : blueMatchPoints == redMatchPoints ? 1 : 0)
-				+ (bluePowerCells >= SimTourney.POWER_CELLS_RP ? 1 : 0)
-				+ (blueEndgamePoints >= SimTourney.ENDGAME_RP ? 1 : 0);
+				+ (blueControlPanelPoints >= 35 ? 1 : 0) + (blueEndgamePoints >= SimTourney.ENDGAME_RP ? 1 : 0);
 	}
 
 	public boolean isPlayed() {
@@ -198,6 +211,14 @@ public class Match {
 
 	public int getBluePowerCells() {
 		return bluePowerCells;
+	}
+
+	public int getRedControlPanelPoints() {
+		return redControlPanelPoints;
+	}
+
+	public int getBlueControlPanelPoints() {
+		return blueControlPanelPoints;
 	}
 
 }

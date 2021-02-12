@@ -37,13 +37,12 @@ import javax.swing.Timer;
  * this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * @author Nicholas Bottone
- * @version SRC.2.0
+ * @version SRC.3.0
  */
 public class SimTourney {
 
-	public static final String VERSION = "SRC.2.0";
+	public static final String VERSION = "SRC.3.0";
 
-	public static final int POWER_CELLS_RP = 120;
 	public static final int ENDGAME_RP = 65;
 
 	private static JLabel label;
@@ -323,6 +322,14 @@ public class SimTourney {
 			int teleBlue = scan.nextInt();
 			scan.close();
 
+			scan = new Scanner(new File(directory + "\\CP_R.txt"));
+			int cpRed = scan.nextInt();
+			scan.close();
+
+			scan = new Scanner(new File(directory + "\\CP_B.txt"));
+			int cpBlue = scan.nextInt();
+			scan.close();
+
 			scan = new Scanner(new File(directory + "\\OPR.txt"));
 			List<String> redTeamList = Arrays.asList(redTeams);
 			List<String> redAlphabetized = Arrays.asList(new String[] { null, null, null });
@@ -359,7 +366,7 @@ public class SimTourney {
 			// Build match model
 			int matchNumber = (int) Double.parseDouble(matchNum);
 			Match match = new Match(matchNumber, autoRed, endRed, teleRed, cellsRed, scoreRed, autoBlue, endBlue,
-					teleBlue, cellsBlue, scoreBlue, Team.EMPTY_TEAMS, Team.EMPTY_TEAMS, oprRed, oprBlue);
+					teleBlue, cellsBlue, scoreBlue, Team.EMPTY_TEAMS, Team.EMPTY_TEAMS, oprRed, oprBlue, cpRed, cpBlue);
 
 			List<String> matchesLines = Files.readAllLines(Paths.get("matches.csv"));
 
@@ -480,7 +487,7 @@ public class SimTourney {
 		matchesWriter.println("Match,Red1,Red2,Red3,Blue1,Blue2,Blue3,,Red Score,Blue Score,,Red RPs,"
 				+ "Blue RPs,,Red Auto,Red Teleop,Red Endgame,Red Power Cells,,Blue Auto,Blue Teleop,"
 				+ "Blue Endgame,Blue Power Cells,,R1 Contribution,R2 Contribution,R3 Contribution,"
-				+ "B1 Contribution,B2 Contribution,B3 Contribution");
+				+ "B1 Contribution,B2 Contribution,B3 Contribution,,Red CPanel,Blue CPanel");
 
 		for (Match match : matchList) {
 			matchesWriter.println(match);
