@@ -1,6 +1,6 @@
 {
   "name": "xrcsim-tourney-runner",
-  "version": "pre-0.1.0",
+  "version": "0.1.0",
   "description": "Event runner for xRC Simulator",
   "scripts": {
     "start": "ts-node src/index.ts",
