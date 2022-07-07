@@ -1,18 +1,17 @@
-# FRCSim Tourney Runner
+# xRC Sim Tourney Runner
 
-Keeps track of rankings and schedules for FRCSim competitions. Also includes an [OBS Lua script](https://github.com/NicholasBottone/FRCSim-Tourney-Runner/blob/master/SimSync.lua) for displaying live game data on livestream overlays.
+Automatically saves match results from xRC Simulator games to a Google Sheet, helping to expedite the process of running tournaments. Currently works for Rapid React simulator competitions. Also includes an [OBS Lua script](https://github.com/NicholasBottone/xRCSim-Tourney-Runner/blob/main/SimSync.lua) for displaying live game data on livestream overlays.
 
-To be used for competitions and tournaments in the Unity-based game [xRC Simulator](http://xrcsimulator.org/). Used in online [SRC events](https://discord.gg/2sZhVU4).
+To be used for competitions and tournaments in the Unity-based game [xRC Simulator](http://xrcsimulator.org/). Used in online [SRC events](https://secondrobotics.org).
 
 ## Getting Started
 
-1.  Ensure you have Git and Node.js installed.
-2.  Clone the repo.
-3.  Run `npm install` in the root directory to install all dependencies.
-4.  Create
-5.  Run `npm install` to install the dependencies.
-6.  Create a Google
-7.  Run `npm start` to start the CLI application.
+- You must have a Google Sheet setup with an API Service Account.
+- You must have a `.env` file in the root of the project, see `.env.example` for an example.
+- Run `npm install` in the root directory to install all dependencies.
+- Run `npm start` to start the CLI application.
+
+For a detailed tutorial, [click here to visit the wiki](https://github.com/NicholasBottone/xRCSim-Tourney-Runner/wiki).
 
 ## Contributing to this project
 
