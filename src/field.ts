@@ -135,3 +135,8 @@ export async function getMatchData(
 
   return match;
 }
+
+export function setMatchNumber(matchNumber: number) {
+  fs.existsSync("TourneyData/") || fs.mkdirSync("TourneyData/");
+  fs.writeFileSync("TourneyData/MatchNumber.txt", String(matchNumber));
+}

@@ -2,6 +2,7 @@ import inquirer from "inquirer";
 import gradient from "gradient-string";
 import welcome from "./welcome";
 import { saveField } from "./saver";
+import { setMatchNumber } from "./field";
 
 async function main() {
   const { matchesSheet, scheduleSheet } = await welcome();
@@ -11,6 +12,7 @@ async function main() {
   while (true) {
     console.log();
     console.log(gradient.cristal(`Match ${matchNumber}`));
+    setMatchNumber(matchNumber);
 
     const res = await inquirer.prompt({
       type: "list",
