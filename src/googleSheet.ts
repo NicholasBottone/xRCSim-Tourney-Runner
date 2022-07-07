@@ -69,13 +69,36 @@ export async function updateMatch(
 ) {
   const rows = await matchesSheet.getRows();
 
-  const row = rows.find((r) => r.matchNumber === match.matchNumber);
+  const row = rows.find((r) => r["Match Number"] == match.matchNumber);
   if (!row) {
     throw new Error(`Could not find match ${match.matchNumber}`);
   }
 
   saveMatchToRow(match, row);
   await row.save();
+
+  return row;
+}
+
+export async function isAlreadyPlayed(
+  matchesSheet: GoogleSpreadsheetWorksheet,
+  matchNumber: number
+) {
+  const rows = await matchesSheet.getRows();
+
+  return rows.some((r) => r["Match Number"] == matchNumber);
+}
+
+export async function getMatch(
+  scheduleSheet: GoogleSpreadsheetWorksheet,
+  matchNumber: number
+) {
+  const rows = await scheduleSheet.getRows();
+
+  const row = rows.find((r) => r["Match Number"] == matchNumber);
+  if (!row) {
+    throw new Error(`Could not find match ${matchNumber}`);
+  }
 
   return row;
 }

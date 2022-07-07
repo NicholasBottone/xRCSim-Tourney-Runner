@@ -32,6 +32,8 @@ export default interface Match {
   redCargo: number;
   blueCargo: number;
 
+  redRP: number;
+  blueRP: number;
   redTiebreaker: number;
   blueTiebreaker: number;
 }
@@ -63,6 +65,8 @@ export function matchToArray(match: Match): any[] {
     match.blue3Contribution,
     match.redCargo,
     match.blueCargo,
+    match.redRP,
+    match.blueRP,
     match.redTiebreaker,
     match.blueTiebreaker,
   ];
@@ -94,6 +98,8 @@ export const headerValues = [
   "Blue 3 Contribution",
   "Red Cargo",
   "Blue Cargo",
+  "Red RP",
+  "Blue RP",
   "Red Tiebreaker",
   "Blue Tiebreaker",
 ];
@@ -124,6 +130,8 @@ export function saveMatchToRow(match: Match, row: GoogleSpreadsheetRow) {
   row["Blue 3 Contribution"] = match.blue3Contribution;
   row["Red Cargo"] = match.redCargo;
   row["Blue Cargo"] = match.blueCargo;
+  row["Red RP"] = match.redRP;
+  row["Blue RP"] = match.blueRP;
   row["Red Tiebreaker"] = match.redTiebreaker;
   row["Blue Tiebreaker"] = match.blueTiebreaker;
 }
