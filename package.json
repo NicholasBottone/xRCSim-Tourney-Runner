@@ -1,10 +1,9 @@
 {
-  "name": "frcsim-tourney-runner",
+  "name": "xrcsim-tourney-runner",
   "version": "1.0.0",
   "description": "Event runner for xRC Simulator",
   "scripts": {
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
+    "start": "ts-node src/index.ts",
     "build": "tsc"
   },
   "dependencies": {
