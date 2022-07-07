@@ -1,6 +1,7 @@
 --[[
 	OBS Lua script
     Syncs FRC Sim game states with OBS text sources (for up to 4 independent servers)
+    Designed for FRC 2022 Rapid React
     By Nicholas Bottone
 --]]
 
@@ -9,13 +10,16 @@ local obs = obslua
 local servers, simData1, simData2, simData3, simData4, interval -- OBS settings
 local activeId = 0 -- active timer id
 
+function isempty(s)
+    return s == nil or s == ''
+end
 
 function safetyRead(f)
     local line = f:read()
     if ( line ) then
         return line
     end
-    return "-"
+    return ""
 end
 
 
@@ -44,6 +48,9 @@ local function checkFile(id)
             dataDirectory = simData4
         end
 
+        local redRP = 0
+        local blueRP = 0
+
         -- MATCH TIMER
         local f = io.open(dataDirectory.."/Timer.txt", "rb")
         if f then
@@ -58,9 +65,11 @@ local function checkFile(id)
 
         -- RED SCORE
         local f = io.open(dataDirectory.."/ScoreR.txt", "rb")
+        local redScore = "0"
         if f then
             settings = obs.obs_data_create()
-            obs.obs_data_set_string(settings, "text", safetyRead(f))
+            redScore = safetyRead(f)
+            obs.obs_data_set_string(settings, "text", redScore)
             source = obs.obs_get_source_by_name("Red Score"..sourceStr)
             obs.obs_source_update(source, settings)
             obs.obs_data_release(settings)
@@ -70,9 +79,11 @@ local function checkFile(id)
 
         -- BLUE SCORE
         local f = io.open(dataDirectory.."/ScoreB.txt", "rb")
+        local blueScore = "0"
         if f then
             settings = obs.obs_data_create()
-            obs.obs_data_set_string(settings, "text", safetyRead(f))
+            blueScore = safetyRead(f)
+            obs.obs_data_set_string(settings, "text", blueScore)
             source = obs.obs_get_source_by_name("Blue Score"..sourceStr)
             obs.obs_source_update(source, settings)
             obs.obs_data_release(settings)
@@ -132,49 +143,165 @@ local function checkFile(id)
         local f = io.open(dataDirectory.."/EndR.txt", "rb")
         if f then
             settings = obs.obs_data_create()
-            obs.obs_data_set_string(settings, "text", safetyRead(f))
+            endRed = safetyRead(f)
+            obs.obs_data_set_string(settings, "text", endRed)
             source = obs.obs_get_source_by_name("Red Endgame Points"..sourceStr)
             obs.obs_source_update(source, settings)
             obs.obs_data_release(settings)
             obs.obs_source_release(source)
             f:close()
+
+            if ( tonumber(endRed) >= 22 ) then
+                redRP = redRP + 1
+            end
         end
 
         -- End Blue
         local f = io.open(dataDirectory.."/EndB.txt", "rb")
         if f then
             settings = obs.obs_data_create()
-            obs.obs_data_set_string(settings, "text", safetyRead(f))
+            endBlue = safetyRead(f)
+            obs.obs_data_set_string(settings, "text", endBlue)
             source = obs.obs_get_source_by_name("Blue Endgame Points"..sourceStr)
             obs.obs_source_update(source, settings)
             obs.obs_data_release(settings)
             obs.obs_source_release(source)
             f:close()
+
+            if ( tonumber(endBlue) >= 22 ) then
+                blueRP = blueRP + 1
+            end
         end
 
-        -- PCs Red
-        local f = io.open(dataDirectory.."/PC_R.txt", "rb")
+        -- Cargo Red
+        local cargoRed = 0
+        local autoCargoRed = 0
+        local f = io.open(dataDirectory.."/C_H_R.txt", "rb") -- Cargo High
         if f then
-            settings = obs.obs_data_create()
-            obs.obs_data_set_string(settings, "text", safetyRead(f))
-            source = obs.obs_get_source_by_name("Red Power Cells"..sourceStr)
-            obs.obs_source_update(source, settings)
-            obs.obs_data_release(settings)
-            obs.obs_source_release(source)
+            cargoRed = cargoRed + tonumber(safetyRead(f))
             f:close()
+        end
+        f = io.open(dataDirectory.."/C_L_R.txt", "rb") -- Cargo Low
+        if f then
+            cargoRed = cargoRed + tonumber(safetyRead(f))
+            f:close()
+        end
+        f = io.open(dataDirectory.."/Auto_C_H_R.txt", "rb") -- Auto Cargo High
+        if f then
+            autoCargoRed = autoCargoRed + tonumber(safetyRead(f))
+            f:close()
+        end
+        f = io.open(dataDirectory.."/Auto_C_L_R.txt", "rb") -- Auto Cargo Low
+        if f then
+            autoCargoRed = autoCargoRed + tonumber(safetyRead(f))
+            f:close()
+        end
+        cargoRed = cargoRed + autoCargoRed
+
+        settings = obs.obs_data_create()
+        obs.obs_data_set_string(settings, "text", tostring(cargoRed))
+        source = obs.obs_get_source_by_name("Red Cargo"..sourceStr)
+        obs.obs_source_update(source, settings)
+        obs.obs_data_release(settings)
+        obs.obs_source_release(source)
+
+        if ( cargoRed >= 60 ) then
+            redRP = redRP + 1
         end
 
-        -- PCs Blue
-        local f = io.open(dataDirectory.."/PC_B.txt", "rb")
+        -- Cargo Blue
+        local cargoBlue = 0
+        local autoCargoBlue = 0
+        local f = io.open(dataDirectory.."/C_H_B.txt", "rb") -- Cargo High
         if f then
-            settings = obs.obs_data_create()
-            obs.obs_data_set_string(settings, "text", safetyRead(f))
-            source = obs.obs_get_source_by_name("Blue Power Cells"..sourceStr)
-            obs.obs_source_update(source, settings)
-            obs.obs_data_release(settings)
-            obs.obs_source_release(source)
+            cargoBlue = cargoBlue + tonumber(safetyRead(f))
             f:close()
         end
+        f = io.open(dataDirectory.."/C_L_B.txt", "rb") -- Cargo Low
+        if f then
+            cargoBlue = cargoBlue + tonumber(safetyRead(f))
+            f:close()
+        end
+        f = io.open(dataDirectory.."/Auto_C_H_B.txt", "rb") -- Auto Cargo High
+        if f then
+            autoCargoBlue = autoCargoBlue + tonumber(safetyRead(f))
+            f:close()
+        end
+        f = io.open(dataDirectory.."/Auto_C_L_B.txt", "rb") -- Auto Cargo Low
+        if f then
+            autoCargoBlue = autoCargoBlue + tonumber(safetyRead(f))
+            f:close()
+        end
+        cargoBlue = cargoBlue + autoCargoBlue
+
+        settings = obs.obs_data_create()
+        obs.obs_data_set_string(settings, "text", tostring(cargoBlue))
+        source = obs.obs_get_source_by_name("Blue Cargo"..sourceStr)
+        obs.obs_source_update(source, settings)
+        obs.obs_data_release(settings)
+        obs.obs_source_release(source)
+
+        if ( cargoBlue >= 60 ) then
+            blueRP = blueRP + 1
+        end
+
+        -- Hangs Red
+        local hangRed = ""
+        local f = io.open(dataDirectory.."/H_L_R.txt", "rb") -- Hang Low
+        if f then
+            hangRed = hangRed..safetyRead(f)
+            f:close()
+        end
+        f = io.open(dataDirectory.."/H_M_R.txt", "rb") -- Hang Middle
+        if f then
+            hangRed = hangRed.."-"..safetyRead(f)
+            f:close()
+        end
+        f = io.open(dataDirectory.."/H_H_R.txt", "rb") -- Hang High
+        if f then
+            hangRed = hangRed.."-"..safetyRead(f)
+            f:close()
+        end
+        f = io.open(dataDirectory.."/H_T_R.txt", "rb") -- Hang Traverse
+        if f then
+            hangRed = hangRed.."-"..safetyRead(f)
+            f:close()
+        end
+        settings = obs.obs_data_create()
+        obs.obs_data_set_string(settings, "text", hangRed)
+        source = obs.obs_get_source_by_name("Red Hang"..sourceStr)
+        obs.obs_source_update(source, settings)
+        obs.obs_data_release(settings)
+        obs.obs_source_release(source)
+        
+        -- Hangs Blue
+        local hangBlue = ""
+        local f = io.open(dataDirectory.."/H_L_B.txt", "rb") -- Hang Low
+        if f then
+            hangBlue = hangBlue..safetyRead(f)
+            f:close()
+        end
+        f = io.open(dataDirectory.."/H_M_B.txt", "rb") -- Hang Middle
+        if f then
+            hangBlue = hangBlue.."-"..safetyRead(f)
+            f:close()
+        end
+        f = io.open(dataDirectory.."/H_H_B.txt", "rb") -- Hang High
+        if f then
+            hangBlue = hangBlue.."-"..safetyRead(f)
+            f:close()
+        end
+        f = io.open(dataDirectory.."/H_T_B.txt", "rb") -- Hang Traverse
+        if f then
+            hangBlue = hangBlue.."-"..safetyRead(f)
+            f:close()
+        end
+        settings = obs.obs_data_create()
+        obs.obs_data_set_string(settings, "text", hangBlue)
+        source = obs.obs_get_source_by_name("Blue Hang"..sourceStr)
+        obs.obs_source_update(source, settings)
+        obs.obs_data_release(settings)
+        obs.obs_source_release(source)
 
         -- Penalty Red
         local f = io.open(dataDirectory.."/PenR.txt", "rb")
@@ -227,6 +354,98 @@ local function checkFile(id)
             f:close()
         end
 
+        -- OPR All
+        local f = io.open(dataDirectory.."/OPR.txt", "rb")
+        if f then
+            settings = obs.obs_data_create()
+            obs.obs_data_set_string(settings, "text", safetyRead(f).."\n"..safetyRead(f).."\n"..safetyRead(f).."\n"..safetyRead(f).."\n"..safetyRead(f).."\n"..safetyRead(f))
+            source = obs.obs_get_source_by_name("OPR"..sourceStr)
+            obs.obs_source_update(source, settings)
+            obs.obs_data_release(settings)
+            obs.obs_source_release(source)
+            f:close()
+        end
+
+        if isempty(redScore) then
+            redScore = "0"
+        end
+        if isempty(blueScore) then
+            blueScore = "0"
+        end
+        
+        -- Win/Loss
+        if (tonumber(redScore) > tonumber(blueScore)) then
+            -- Red Wins
+            settings = obs.obs_data_create()
+            obs.obs_data_set_string(settings, "text", "WIN")
+            source = obs.obs_get_source_by_name("Red Result"..sourceStr)
+            obs.obs_source_update(source, settings)
+            obs.obs_data_release(settings)
+            obs.obs_source_release(source)
+
+            settings = obs.obs_data_create()
+            obs.obs_data_set_string(settings, "text", "LOSS")
+            source = obs.obs_get_source_by_name("Blue Result"..sourceStr)
+            obs.obs_source_update(source, settings)
+            obs.obs_data_release(settings)
+            obs.obs_source_release(source)
+
+            redRP = redRP + 2
+        else
+            if (tonumber(redScore) < tonumber(blueScore)) then
+                -- Blue Wins
+                settings = obs.obs_data_create()
+                obs.obs_data_set_string(settings, "text", "WIN")
+                source = obs.obs_get_source_by_name("Blue Result"..sourceStr)
+                obs.obs_source_update(source, settings)
+                obs.obs_data_release(settings)
+                obs.obs_source_release(source)
+
+                settings = obs.obs_data_create()
+                obs.obs_data_set_string(settings, "text", "LOSS")
+                source = obs.obs_get_source_by_name("Red Result"..sourceStr)
+                obs.obs_source_update(source, settings)
+                obs.obs_data_release(settings)
+                obs.obs_source_release(source)
+
+                blueRP = blueRP + 2
+            else
+                -- Tie
+                settings = obs.obs_data_create()
+                obs.obs_data_set_string(settings, "text", "TIE")
+                source = obs.obs_get_source_by_name("Red Result"..sourceStr)
+                obs.obs_source_update(source, settings)
+                obs.obs_data_release(settings)
+                obs.obs_source_release(source)
+
+                settings = obs.obs_data_create()
+                obs.obs_data_set_string(settings, "text", "TIE")
+                source = obs.obs_get_source_by_name("Blue Result"..sourceStr)
+                obs.obs_source_update(source, settings)
+                obs.obs_data_release(settings)
+                obs.obs_source_release(source)
+
+                redRP = redRP + 1
+                blueRP = blueRP + 1
+            end
+        end
+
+        -- RP Red
+        settings = obs.obs_data_create()
+        obs.obs_data_set_string(settings, "text", "+"..tostring(redRP).." RP")
+        source = obs.obs_get_source_by_name("Red RP"..sourceStr)
+        obs.obs_source_update(source, settings)
+        obs.obs_data_release(settings)
+        obs.obs_source_release(source)
+
+        -- RP Blue
+        settings = obs.obs_data_create()
+        obs.obs_data_set_string(settings, "text", "+"..tostring(blueRP).." RP")
+        source = obs.obs_get_source_by_name("Blue RP"..sourceStr)
+        obs.obs_source_update(source, settings)
+        obs.obs_data_release(settings)
+        obs.obs_source_release(source)
+
     end
 
 end
@@ -266,7 +485,7 @@ end
 
 -- The script description shown in OBS
 function script_description()
-	return "Syncs FRC sim game state to OBS text sources"
+	return "Syncs FRC Sim Rapid React game state to OBS text sources"
 end
 
 
