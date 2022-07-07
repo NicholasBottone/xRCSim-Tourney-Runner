@@ -7,9 +7,9 @@ To be used for competitions and tournaments in the Unity-based game [xRC Simulat
 ## Getting Started
 
 - You must have a Google Sheet setup with an API Service Account.
-- You must have a `.env` file in the root of the project, see `.env.example` for an example.
-- Run `npm install` in the root directory to install all dependencies.
-- Run `npm start` to start the CLI application.
+- You must have a `.env` file in the root of the project, see [`.env.example`](./.env.example) for an example.
+- [Download the latest pre-release from the artifacts section on the Actions build](https://github.com/NicholasBottone/xRCSim-Tourney-Runner/actions/workflows/pkg.yml?query=is%3Asuccess).
+- There are currently no stable releases out yet.
 
 For a detailed tutorial, [click here to visit the wiki](https://github.com/NicholasBottone/xRCSim-Tourney-Runner/wiki).
 
