@@ -3,6 +3,7 @@ import { createSpinner } from "nanospinner";
 import chalk from "chalk";
 import { setupConnection } from "./googleSheet";
 import gradient from "gradient-string";
+import { version } from "../package.json";
 
 const envVars = [
   "GOOGLE_SHEET_CLIENT_EMAIL",
@@ -12,7 +13,7 @@ const envVars = [
 
 export default async function welcome() {
   console.clear();
-  console.log(gradient.pastel("xRC Tourney Runner"));
+  console.log(gradient.pastel(`xRC Tourney Runner ${version}`));
   console.log(chalk.cyan("Copyright (c) 2022 Nicholas Bottone"));
   console.log();
 

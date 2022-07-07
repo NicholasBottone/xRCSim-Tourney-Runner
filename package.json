@@ -1,10 +1,10 @@
 {
   "name": "xrcsim-tourney-runner",
-  "version": "1.0.0",
+  "version": "pre-0.1.0",
   "description": "Event runner for xRC Simulator",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc && npx pkg@latest . --compress GZip --targets node14-linux-x64,node14-macos-x64,node14-win-x64 --yes"
   },
   "dependencies": {
     "chalk": "^4.1.2",
@@ -40,5 +40,6 @@
   "engines": {
     "node": ">=14",
     "npm": ">=8"
-  }
+  },
+  "bin": "dist/src/index.js"
 }

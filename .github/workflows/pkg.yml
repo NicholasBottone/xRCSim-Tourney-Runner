@@ -1,0 +1,31 @@
+name: Package Pre-Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  package:
+    name: 🎉 Package Pre-Release
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v2
+
+      - name: 🔨 Set up Node 14.19.1
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.19.1
+
+      - name: 🛠 Compile and Build
+        run: |
+          npm ci
+          npm run build
+
+      - name: 📦 Upload Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: Executables
+          path: /home/runner/work/MinecraftRoboticsCompetition/MinecraftRoboticsCompetition/xrcsim-tourney-runner-**
