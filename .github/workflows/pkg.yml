@@ -28,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Executables
-          path: /home/runner/work/MinecraftRoboticsCompetition/MinecraftRoboticsCompetition/xrcsim-tourney-runner-**
+          path: /**/xrcsim-tourney-runner-**
