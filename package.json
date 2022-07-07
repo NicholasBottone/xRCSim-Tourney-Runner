@@ -11,11 +11,15 @@
     "chalk": "^4.1.2",
     "dotenv": "^10.0.0",
     "google-spreadsheet": "^3.3.0",
-    "inquirer": "^8.2.4"
+    "gradient-string": "^2.0.1",
+    "inquirer": "^8.2.4",
+    "nanospinner": "^1.1.0"
   },
   "devDependencies": {
     "@types/google-spreadsheet": "^3.3.0",
+    "@types/gradient-string": "^1.1.2",
     "@types/inquirer": "^8.2.1",
+    "@types/node": "^18.0.3",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   },
