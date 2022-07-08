@@ -1,7 +1,7 @@
 import inquirer from "inquirer";
 import gradient from "gradient-string";
 import welcome from "./welcome";
-import { saveField } from "./saver";
+import { buildMatchSheet, saveField } from "./saver";
 import { setMatchNumber } from "./field";
 
 async function main() {
@@ -22,6 +22,7 @@ async function main() {
         `Save match ${matchNumber} on field 1`,
         `Save match ${matchNumber} on field 2`,
         "Set match number",
+        "Build match sheet",
         "Exit",
       ],
     });
@@ -43,6 +44,9 @@ async function main() {
           validate: (input) => Number.isInteger(input) && input >= 1,
         });
         matchNumber = resp.match;
+        break;
+      case "Build match sheet":
+        await buildMatchSheet(matchesSheet, scheduleSheet);
         break;
       case "Exit":
         process.exit(0);

@@ -1,6 +1,6 @@
 import { GoogleSpreadsheetWorksheet } from "google-spreadsheet";
 import { getMatchData } from "./field";
-import { isAlreadyPlayed, postMatch, updateMatch } from "./googleSheet";
+import { copyScheduleToMatchesSheet, updateMatch } from "./googleSheet";
 import { createSpinner } from "nanospinner";
 import chalk from "chalk";
 
@@ -18,7 +18,6 @@ export async function saveField(
   } catch (e) {
     spinner.error();
     console.log(chalk.red(e));
-    console.log(chalk.red("Aborting save"));
     return;
   }
   spinner.success();
@@ -26,16 +25,28 @@ export async function saveField(
   spinner = createSpinner("Saving to Google Sheet").start();
 
   try {
-    if (await isAlreadyPlayed(matchesSheet, matchNumber)) {
-      await updateMatch(matchesSheet, match);
-    } else {
-      await postMatch(matchesSheet, match);
-    }
+    await updateMatch(matchesSheet, match);
   } catch (e) {
     spinner.error();
     console.log(chalk.red(e));
-    console.log(chalk.red("Aborting save"));
     return;
   }
+  spinner.success();
+}
+
+export async function buildMatchSheet(
+  matchesSheet: GoogleSpreadsheetWorksheet,
+  scheduleSheet: GoogleSpreadsheetWorksheet
+) {
+  const spinner = createSpinner("Building match sheet").start();
+
+  try {
+    await copyScheduleToMatchesSheet(matchesSheet, scheduleSheet);
+  } catch (e) {
+    spinner.error();
+    console.log(chalk.red(e));
+    return;
+  }
+
   spinner.success();
 }

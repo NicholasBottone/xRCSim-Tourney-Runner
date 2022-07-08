@@ -53,6 +53,7 @@ export default async function welcome() {
   }
 
   spinner.success();
+
   const sheetsUrl = `https://docs.google.com/spreadsheets/d/${process.env.GOOGLE_SHEET_DOC_ID}`;
   console.log(chalk.green(`Connected to Google Sheets: ${sheetsUrl}`));
   console.log();
