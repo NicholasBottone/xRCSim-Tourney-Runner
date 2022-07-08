@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import open from "open";
 import { createSpinner } from "nanospinner";
 import chalk from "chalk";
 import { setupConnection } from "./googleSheet";
@@ -25,6 +26,10 @@ export default async function welcome() {
     if (!process.env[envVar]) {
       spinner.error();
       console.log(chalk.red(`Missing environment variable: ${envVar}`));
+      await open(
+        "https://github.com/NicholasBottone/xRCSim-Tourney-Runner/wiki/Set-up-.env",
+        { wait: true }
+      );
       process.exit(1);
     }
   }
@@ -40,6 +45,10 @@ export default async function welcome() {
   } catch (e) {
     spinner.error();
     console.log(chalk.red(e));
+    await open(
+      "https://github.com/NicholasBottone/xRCSim-Tourney-Runner/wiki/Set-up-Google-Sheet",
+      { wait: true }
+    );
     process.exit(1);
   }
 
