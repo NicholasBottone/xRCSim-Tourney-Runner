@@ -80,15 +80,15 @@ export async function getMatchData(
     fs.readFileSync(`${dataDirectory}/EndB.txt`, "utf8")
   );
 
+  const rpRedBonus =
+    (endRed > ENDGAME_BONUS_RP ? 1 : 0) + (cargoRed > CARGO_BONUS_RP ? 1 : 0);
   const rpRed =
-    (scoreRed > scoreBlue ? 2 : scoreRed === scoreBlue ? 1 : 0) +
-    (endRed > ENDGAME_BONUS_RP ? 1 : 0) +
-    (cargoRed > CARGO_BONUS_RP ? 1 : 0);
+    rpRedBonus + (scoreRed > scoreBlue ? 2 : scoreRed === scoreBlue ? 1 : 0);
 
+  const rpBlueBonus =
+    (endBlue > ENDGAME_BONUS_RP ? 1 : 0) + (cargoBlue > CARGO_BONUS_RP ? 1 : 0);
   const rpBlue =
-    (scoreBlue > scoreRed ? 2 : scoreBlue === scoreRed ? 1 : 0) +
-    (endBlue > ENDGAME_BONUS_RP ? 1 : 0) +
-    (cargoBlue > CARGO_BONUS_RP ? 1 : 0);
+    rpBlueBonus + (scoreBlue > scoreRed ? 2 : scoreBlue === scoreRed ? 1 : 0);
 
   // Calculate tiebreakers
   const penaltyRed = parseInt(
@@ -131,6 +131,8 @@ export async function getMatchData(
     blueRP: rpBlue,
     redTiebreaker: tiebreakerRed,
     blueTiebreaker: tiebreakerBlue,
+    redBonusRP: rpRedBonus,
+    blueBonusRP: rpBlueBonus,
   };
 
   return match;
