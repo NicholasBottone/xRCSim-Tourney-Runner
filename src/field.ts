@@ -81,12 +81,13 @@ export async function getMatchData(
   );
 
   const rpRedBonus =
-    (endRed > ENDGAME_BONUS_RP ? 1 : 0) + (cargoRed > CARGO_BONUS_RP ? 1 : 0);
+    (endRed >= ENDGAME_BONUS_RP ? 1 : 0) + (cargoRed >= CARGO_BONUS_RP ? 1 : 0);
   const rpRed =
     rpRedBonus + (scoreRed > scoreBlue ? 2 : scoreRed === scoreBlue ? 1 : 0);
 
   const rpBlueBonus =
-    (endBlue > ENDGAME_BONUS_RP ? 1 : 0) + (cargoBlue > CARGO_BONUS_RP ? 1 : 0);
+    (endBlue >= ENDGAME_BONUS_RP ? 1 : 0) +
+    (cargoBlue >= CARGO_BONUS_RP ? 1 : 0);
   const rpBlue =
     rpBlueBonus + (scoreBlue > scoreRed ? 2 : scoreBlue === scoreRed ? 1 : 0);
 
