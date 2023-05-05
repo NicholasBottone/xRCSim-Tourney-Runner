@@ -1,5 +1,7 @@
 # xRC Sim Tourney Runner
 
+⚠️ Succeeded by [SecondRobotics/SimTourneyBot](https://github.com/SecondRobotics/SimTourneyBot) ⚠️
+
 Automatically saves match results from xRC Simulator games to a Google Sheet, helping to expedite the process of running tournaments. Currently works for Rapid React simulator competitions. Also includes an [OBS Lua script](https://github.com/NicholasBottone/xRCSim-Tourney-Runner/blob/main/SimSync.lua) for displaying live game data on livestream overlays.
 
 To be used for competitions and tournaments in the Unity-based game [xRC Simulator](http://xrcsimulator.org/). Used in online [SRC events](https://secondrobotics.org).
